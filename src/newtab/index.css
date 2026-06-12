@@ -1,0 +1,193 @@
+/* ============================================
+   MODERN CSS RESET
+   A clean baseline for every web project
+   ============================================ */
+
+/* 1. Use border-box sizing model universally */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* 2. Remove default margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+}
+
+/* 3. Root & body defaults */
+html {
+    /* Prevent font size inflation on mobile */
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+
+    /* Smoother scrolling for anchor links */
+    scroll-behavior: smooth;
+}
+
+body {
+    /* Sensible default line-height */
+    line-height: 1.5;
+
+    /* Improve text rendering */
+    /* ? There only work for MacOS anyways */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Full viewport height minimum */
+    min-height: 100vh;
+}
+
+/* 4. Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    /* Don't inherit line-height from body; headings need tighter spacing */
+    line-height: 1.1;
+}
+
+p,
+li,
+figcaption {
+    /* Prevents uncomfortably long lines */
+    text-wrap: pretty;
+    max-width: 75ch;
+    /* ? ch means width of "0" character so 75ch means 75 0s in a row*/
+}
+
+/* 5. Media elements — block by default, responsive */
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+    user-select: none;
+}
+
+img {
+    height: auto;
+}
+
+/* 6. Inherit fonts for form controls (browsers don't do this by default) */
+input,
+button,
+textarea,
+select,
+input::placeholder,
+textarea::placeholder {
+    font: inherit;
+    color: inherit;
+}
+
+/* 7. Remove default button styles */
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* 8. Textarea resize — only vertical by default */
+textarea {
+    resize: vertical;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+}
+
+/* 9. Lists — remove styles when used for UI (not content) */
+ul[role="list"],
+ol[role="list"] {
+    list-style: none;
+}
+
+/* 10. Anchor tags */
+a,
+a:hover,
+a:focus {
+    text-decoration: none;
+    text-decoration-skip-ink: auto;
+    /* ? Determines how underline behaves when you have glyph ascenders and descenders */
+    color: inherit;
+}
+
+/* 11. Tables */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* 12. Horizontal rule */
+hr {
+    border: none;
+    border-top: 1px solid currentColor;
+    opacity: 0.2;
+}
+
+/* 13. Hidden attribute support */
+[hidden] {
+    display: none !important;
+}
+
+/* Keyboard navigation — removes ugly focus ring for mouse
+   but keeps it for keyboard users */
+:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+
+/* 14. Reduced motion — respect user preference */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+
+/*  Scroll bar styling */
+
+/* ::-webkit-scrollbar {
+  width: 10px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: aliceblue;
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(240, 248, 255, 0.7);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+} */

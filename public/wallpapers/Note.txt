@@ -1,0 +1,3 @@
+may-and-friends compressed with:
+
+ffmpeg -i may-and-friends.mp4 -c:v libx264 -crf 26 -preset medium -an -movflags +faststart may-and-friends-compressed26.mp4

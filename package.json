@@ -1,0 +1,20 @@
+{
+  "name": "pokemon-retro-themes-grand-finale",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "watch": "vite build --watch",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "zustand": "^5.0.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1"
+  }
+}

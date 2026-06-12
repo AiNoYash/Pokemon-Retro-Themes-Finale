@@ -1,0 +1,159 @@
+{
+"manifest_version": 3,
+  "name": "My Awesome Extension",
+  "version": "1.0.0",
+
+    "description": "A brief, plain text summary of the extension's purpose.",
+  "icons": {
+    "16": "images/icon-16.png",
+    "32": "images/icon-32.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "images/action-icon-16.png",
+      "24": "images/action-icon-24.png",
+      "32": "images/action-icon-32.png"
+    },
+    "default_title": "Click Me!",
+    "default_popup": "popup.html"
+  },
+
+  "background": {
+    "service_worker": "background.js",
+    "type": "module" 
+  },
+
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "notifications",
+    "contextMenus",
+    "declarativeNetRequest",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "https://*.google.com/",
+    "*://*.developer.chrome.com/*"
+  ],
+  "optional_permissions": [
+    "tabs",
+    "downloads"
+  ],
+  "optional_host_permissions": [
+    "*://*/*"
+  ],
+
+  "chrome_url_overrides": {
+    "newtab": "newtab.html",
+    "history": "history.html",
+    "bookmarks": "bookmarks.html"
+  },
+  "options_page": "options.html",
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true 
+  },
+  "devtools_page": "devtools.html",
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.youtube.com/*"],
+      "css": ["css/youtube-styles.css"],
+      "js": ["scripts/content.js"],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "match_about_blank": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["images/*.png", "styles/main.css", "logic.js"],
+      "matches": ["*://*.example.com/*"]
+    }
+  ],
+
+  "commands": {
+    "run-feature-one": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Run Feature One"
+    },
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "MacCtrl+Shift+F"
+      }
+    }
+  },
+  "omnibox": {
+    "keyword": "awe"
+  },
+
+  "default_locale": "en",
+
+
+  "author": "Yash <contact@ainoyash.com>",
+  "homepage_url": "https://www.ainoyash.com",
+  "short_name": "AwesomeExt",
+  "version_name": "1.0 Beta",
+  "minimum_chrome_version": "102",
+  "incognito": "spanning",
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules_1.json"
+      }
+    ]
+  },
+  "externally_connectable": {
+    "ids": [
+      "*" 
+    ],
+    "matches": [
+      "https://*.ainoyash.com/*"
+    ],
+    "accepts_tls_channel_id": false
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';",
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
+  },
+  "cross_origin_embedder_policy": {
+    "value": "require-corp"
+  },
+  "cross_origin_opener_policy": {
+    "value": "same-origin"
+  },
+
+ 
+  "file_browser_handlers": [
+    {
+      "id": "open",
+      "default_title": "Open with My Awesome Extension",
+      "file_filters": [
+        "filesystem:*.txt",
+        "filesystem:*.html"
+      ]
+    }
+  ],
+  "input_components": [
+    {
+      "name": "My Awesome IME",
+      "type": "ime",
+      "id": "awesome_ime",
+      "description": "My Awesome Input Method Editor",
+      "language": "en-US",
+      "layouts": ["us::eng"]
+    }
+  ]
+}

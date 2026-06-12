@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "Pokemon Retro Themes - Bring old-school Pokemon vibes to your browser",
+    "short_name": "Pokemon Retro Themes",
+    "version": "3.0",
+    "version_name": "3",
+    "description": "A Pokemon themed extension adding features and nostalgic themes inspired by the classic Pokemon games to your browser",
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "permissions": [
+        "storage",
+        "search",
+        "notifications",
+        "alarms"
+    ],
+    "chrome_url_overrides": {
+        "newtab": "newtab.html"
+    }
+}

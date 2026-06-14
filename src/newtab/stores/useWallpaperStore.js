@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { chromeExtensionStorage } from './useStore';
+import { chromeExtensionStorage } from './_useStore';
 import { WallpaperMode } from '../../_enums/WallpaperModeEnum';
 import { WallpaperType } from '../../_enums/WallpaperTypeEnum';
 import { ThemeName } from '../../_enums/ThemeNameEnum';

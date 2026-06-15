@@ -1,33 +1,70 @@
+:root {
+  --pokedex-frame-color: #cc0000;
+  --pokedex-input-color: #000000;
+  --pokedex-font-color: aliceblue;
+  --pokedex-input-shadow: inset 0 0 5px #f0f8ffb3;
+  --pokedex-btn-border-outline-color: aliceblue;
+}
+
+
 .pokedex-search {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: fit-content;
-  height: fit-content;
-  gap: 10px;
-  padding: 10px;
+
+  width: 40vw;
+  height: 56px;
+
   display: flex;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 4px;
+
+  opacity: 0.8;
+  border: 1px solid black;
+  background-color: var(--pokedex-frame-color);
+
   overflow: visible;
   min-width: max-content;
   transform: translate(-50%, -50%);
-  border-radius: 5px;
-  opacity: var(--pokedex-opacity);
-  background-color: #cc0000;
-  border: 1px solid black;
-  box-shadow: 0 0px 12px black;
+
   z-index: 60;
 }
 
-.pokedex-search input {
-  width: 25vw;
-  height: 40px;
-  background-color: black;
-  color: aliceblue;
-  box-shadow: inset 0 0 5px rgba(240, 248, 255, 0.7);
-  border-radius: 5px;
-  padding: 5px;
-  font-family: inherit;
+.pokedex-search.dropdown-active {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
+
+.pokedex-search form {
+  display: flex;
+  flex: 1;
+}
+
+.pokedex-search input {
+  flex: 1;
+  height: 100%;
+
+  background-color: var(--pokedex-input-color);
+  color: var(--pokedex-font-color);
+  border-radius: 8px;
+  padding: 5px 5px 5px 8px;
+
+  appearance: none;
+  border: none;
+
+  box-shadow: var(--pokedex-input-shadow);
+}
+
+
+.pokedex-search input:hover {
+  border: 2px solid var(--pokedex-btn-border-outline-color)
+}
+
+.pokedex-search input:focus:hover {
+  border: none;
+}
+
 
 .pokedex-search input::placeholder {
   color: rgba(240, 248, 255, 0.7);
@@ -35,159 +72,81 @@
 
 .search-btns {
   width: auto;
-  height: 40px;
-  cursor: pointer;
+  height: 100%;
+  cursor: var(--cursor-pointer);
   flex-shrink: 0;
-  box-shadow: inset 0 0 5px rgba(240, 248, 255, 0.7);
-  background-color: black;
-  border-radius: 5px;
+  box-shadow: var(--pokedex-input-shadow);
+  background-color: var(--pokedex-input-color);
+  border-radius: 8px;
   padding: 2px;
 }
 
-.extra-dot0 {
-  content: '';
-  position: absolute;
-  top: -12px;
-  left: -12px;
-  width: 35px;
-  height: 35px;
-  background: rgb(0, 153, 255);
-  border-radius: 50%;
-  box-shadow:
-    inset 2px 2px 1px rgb(234, 247, 255),
-    inset -2px -2px 1px rgb(234, 247, 255),
-    inset -2px 2px 1px rgb(234, 247, 255),
-    inset 2px -2px 1px rgb(234, 247, 255),
-    inset 4px 4px 1px rgb(119, 199, 253),
-    inset -4px -4px 1px rgb(119, 199, 253),
-    inset -4px 4px 1px rgb(119, 199, 253),
-    inset 4px -4px 1px rgb(119, 199, 253),
-    inset -4px -4px 1px rgb(119, 199, 253),
-    inset 6px 6px 1px rgb(77, 184, 255),
-    inset -6px 6px 1px rgb(77, 184, 255),
-    inset 6px -6px 1px rgb(77, 184, 255),
-    inset -6px -6px 1px rgb(77, 184, 255),
-    inset 8px 8px 1px rgb(47, 172, 255),
-    inset -8px -8px 1px rgb(47, 172, 255),
-    inset -8px 8px 1px rgb(47, 172, 255),
-    inset 8px -8px 1px rgb(47, 172, 255),
-    inset 10px 10px 1px rgb(29, 165, 255),
-    inset -10px -10px 1px rgb(29, 165, 255),
-    inset -10px 10px 1px rgb(29, 165, 255),
-    inset 10px -10px 1px rgb(29, 165, 255),
-    inset 12px 12px 1px rgb(0, 153, 255),
-    inset -12px -12px 1px rgb(0, 153, 255),
-    inset 12px -12px 1px rgb(0, 153, 255),
-    inset -12px 12px 1px rgb(0, 153, 255);
-
-}
-
-.extra-dot3 {
-  content: '';
-  position: absolute;
-  top: -7px;
-  left: 30px;
-  width: 15px;
-  height: 15px;
-  background: rgba(255, 0, 0, 0.7);
-  border-radius: 50%;
-  border: 2px solid black;
-  box-shadow:
-    inset 2px 2px 1px rgba(255, 80, 80, 0.7),
-    inset -2px -2px 1px rgba(255, 80, 80, 0.7),
-    inset -2px 2px 1px rgba(255, 70, 70, 0.7),
-    inset 2px -2px 1px rgba(255, 70, 70, 0.7),
-    inset 6px 6px 1px rgba(255, 40, 40, 0.7),
-    inset -6px -6px 1px rgba(255, 40, 40, 0.7),
-    inset -6px 6px 1px rgba(255, 20, 20, 0.7),
-    inset 6px -6px 1px rgba(255, 20, 20, 0.7);
-}
-
-.extra-dot2 {
-  content: '';
-  position: absolute;
-  top: -7px;
-  left: 50px;
-  width: 15px;
-  height: 15px;
-  background: rgba(255, 255, 0, 0.7);
-  border-radius: 50%;
-  border: 2px solid black;
-  box-shadow:
-    inset 2px 2px 1px rgba(255, 229, 58, 0.7),
-    inset -2px -2px 1px rgba(255, 229, 58, 0.7),
-    inset -2px 2px 1px rgba(255, 229, 58, 0.7),
-    inset 2px -2px 1px rgba(255, 229, 58, 0.7),
-    inset 6px 6px 1px rgba(255, 221, 0, 0.822),
-    inset -6px -6px 1px rgba(255, 221, 0, 0.822),
-    inset -6px 6px 1px rgba(255, 221, 0, 0.822),
-    inset 6px -6px 1px rgba(255, 221, 0, 0.822);
-}
-
-.extra-dot1 {
-  content: '';
-  position: absolute;
-  top: -7px;
-  left: 70px;
-  width: 15px;
-  height: 15px;
-  background: rgba(0, 255, 0, 0.7);
-  border-radius: 50%;
-  border: 2px solid black;
-  box-shadow:
-    inset 2px 2px 1px rgba(90, 255, 90, 0.7),
-    inset -2px -2px 1px rgba(90, 255, 90, 0.7),
-    inset -2px 2px 1px rgba(90, 255, 90, 0.7),
-    inset 2px -2px 1px rgba(90, 255, 90, 0.7),
-    inset 6px 6px 1px rgba(30, 255, 90, 0.822),
-    inset -6px -6px 1px rgba(30, 255, 90, 0.822),
-    inset -6px 6px 1px rgba(30, 255, 90, 0.822),
-    inset 6px -6px 1px rgba(30, 255, 90, 0.822);
-}
-
-
 .search-btns.active {
   background-color: #b9b9b9;
-  border: 1px solid aliceblue;
+  border: 2px solid var(--pokedex-btn-border-outline-color)
 }
 
 .search-btns:hover {
-  border: 1px solid aliceblue;
+  border: 2px solid var(--pokedex-btn-border-outline-color)
+}
+
+.search-btns.active:hover {
+  background-color: #b9b9b9;
+  border: 2px solid var(--pokedex-btn-border-outline-color)
 }
 
 .search-btns-img {
+  width: auto;
   height: 100%;
-  width: 100%;
 }
 
+.suggestions-container {
+  display: block;
 
-#suggestions {
   position: absolute;
-  top: 58.6px;
-  right: 0px;
-  padding-top: 3px;
-  max-height: min(250px, 50vh - 30.8px);
+  top: 100%;
+  left: 0px;
+
   width: 100%;
-  overflow-y: auto;
-  background-color: black;
-  color: aliceblue;
-  border-radius: 5px;
-  border: 10px solid #cc0000;
-  border-top: none;
+
+  background-color: var(--pokedex-frame-color);
+  padding: 4px 8px 8px 8px;
+
+  border-radius: 4px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  z-index:60;
+
+  z-index: 60;
+}
+
+/* ? Problem comes when you need a scrollbar if the padding is kept and not border is given then scroll bar will be outside but with this cheap trick it will be inside border */
+#suggestions {
+  width: 100%;
+
+  background-color: var(--pokedex-input-color);
+  color: var(--pokedex-font-color);
+  border-radius: 8px;
+
+  /* ! Need to fix this hardcoded value here */
+  max-height: min(250px, 50vh - 30.8px);
+  overflow-y: auto;
   -ms-overflow-style: none;
 }
 
 .suggestion-item {
-  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  cursor: var(--cursor-pointer);
   padding: 10px;
+  background-color: var(--pokedex-input-color);
+  color: var(--pokedex-font-color);
 }
 
 .suggestion-item:hover {
-  background-color: rgba(240, 248, 255, 0.7);
-  color: #000;
+  color: rgba(240, 248, 255, 0.7);
+  background-color: #000000;
 }
 
 .suggestion-item.selected {
@@ -196,50 +155,81 @@
 }
 
 
-@media screen and (max-width: 600px),
-screen and (max-height:500px) {
-  .pokedex-search {
-    padding: 8px;
-    gap: 8px;
-  }
+.suggestion-item:first-of-type {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
 
-  .pokedex-search input {
-    width: 30vw;
-    height: 35px;
-  }
+.suggestion-item:last-of-type {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
 
-  .search-btns {
-    height: 35px;
-  }
+.delete-query-btn {
+  cursor: var(--cursor-pointer);
+  display: flex;
+  align-items: center;
+}
 
-  .pokedex-search:before {
-    width: 30px;
-    height: 30px;
-    top: -10px;
-    left: -10px;
-  }
 
-  .extra-dot1 {
-    width: 13px;
-    height: 13px;
-    left: 60px;
-  }
 
-  .extra-dot2 {
-    width: 13px;
-    height: 13px;
-    left: 43px;
-  }
+/* * Bloom effect is AI generated I thought it looked pretty descent so why not...*/
+.pokedex-dot {
+  width: 13px;
+  height: 13px;
+  border: 2px solid #111;
+  border-radius: 50%;
 
-  .extra-dot3 {
-    width: 13px;
-    height: 13px;
-    left: 26px;
-  }
+  box-sizing: border-box;
+  cursor: var(--cursor-pointer);
+}
 
-  #suggestions {
-    top: 49.6px;
-    border: 8px solid #cc0000;
-    border-top: none;
-  }
+.pokedex-dot.red {
+  position: absolute;
+  top: -7px;
+  left: 30px;
+  background: #e52521;
+  box-shadow:
+    inset 2px 2px 0px #ff8a8a,
+    0 0 0 2px rgba(229, 37, 33, 0.5),
+    0 0 0 4px rgba(229, 37, 33, 0.2);
+}
+
+.pokedex-dot.yellow {
+  position: absolute;
+  top: -7px;
+  left: 50px;
+  background: #ffcc00;
+  box-shadow:
+    inset 2px 2px 0px #ffff8a,
+    0 0 0 2px rgba(255, 204, 0, 0.5),
+    0 0 0 4px rgba(255, 204, 0, 0.2);
+}
+
+.pokedex-dot.green {
+  position: absolute;
+  top: -7px;
+  left: 70px;
+  background: #4caf50;
+  box-shadow:
+    inset 2px 2px 0px #a6ffa6,
+    0 0 0 2px rgba(76, 175, 80, 0.5),
+    0 0 0 4px rgba(76, 175, 80, 0.2);
+}
+
+.pokedex-action-btn {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: 32.5px;
+  height: 32.5px;
+  border: 2px solid #111;
+  border-radius: 50%;
+  background: #008be5;
+  box-shadow:
+    inset 4px 4px 0px #70c5ff,
+    inset -2px -2px 0px #005691,
+    0 0 0 3px rgba(0, 139, 229, 0.5),
+    0 0 0 6px rgba(0, 139, 229, 0.2);
+  cursor: var(--cursor-pointer);
 }

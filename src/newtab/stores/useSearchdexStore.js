@@ -4,6 +4,8 @@ import { chromeExtensionStorage } from './_useStore';
 import { SearchEngineType } from '../../_enums/SearchEngineTypeEnum';
 import { SearchOpenTargetType } from '../../_enums/SearchOpenTargetEnum';
 import { VisualSearchEngineOptions } from '../../_enums/VisualSearchEngineOptionsEnum';
+import { ActionBtnRole } from '../../_enums/ActionBtnRoleEnum';
+import { RecognitionLanguage } from '../../_enums/RecognitionLanguageEnum';
 
 
 export const useSearchdexStore = create(
@@ -19,14 +21,31 @@ export const useSearchdexStore = create(
                     return { lastQueries: newLastQueries };
                 });
             },
+            removeLastQuery: (queryToRemove) => {
+                set((state) => ({
+                    lastQueries: state.lastQueries.filter(q => q !== queryToRemove)
+                }));
+            },
+            cleanLastQueries: () => {
+                set((state) => ({
+                    lastQueries: []
+                }));
+            },
 
             searchEngineType: SearchEngineType.BUILTIN,
             searchOpenTarget: SearchOpenTargetType.CURRENT_TAB,
             visualSearchEngine: VisualSearchEngineOptions.LENS,
-            searchEngines: [],
+            searchEngines: [ {name: "Bing", searchUrl: "https://www.bing.com/search?q=%s"}, {name: "Wiki", searchUrl: "https://en.wikipedia.org/w/index.php?search=%s"}],
             currentSearchEngine: -1,
             suggestionsEnabled: true,
-            autoSubmitVoiceSearch: true
+            
+            trafficLightsEnabled: true,
+            actionBtnEnabled: true,
+            actionBtnRole: ActionBtnRole.SWITCH_SEARCH_ENGINE,
+            
+            lastQueriesEnabled: true,
+            autoSubmitVoiceSearch: true,
+            recognitionLanguage: RecognitionLanguage.EN_US,
         }),
         {
             name: 'searchdex-store',

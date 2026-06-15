@@ -1,3 +1,16 @@
+:root {
+    --outline-color: #ffffff;
+    /* ? putting !important next to a css variable is useless browser will ignore it*/
+    --cursor-default: default;
+    --cursor-pointer: pointer;
+    --cursor-drag: move;
+    --cursor-text: text;
+    /* --cursor-default: url('cursor/default.png') 0 0, default; 
+    --cursor-pointer: url('cursor/pointer.png') 17 4, pointer;
+    --cursor-drag: url('cursor/drag.png') 17 4, move;
+    --cursor-text: url('cursor/text.png') 12 30, text; */
+}
+
 /* ============================================
    MODERN CSS RESET
    A clean baseline for every web project
@@ -8,6 +21,7 @@
 *::before,
 *::after {
     box-sizing: border-box;
+    /* cursor: var(--cursor-default) !important; */
 }
 
 /* 2. Remove default margins and paddings */
@@ -21,7 +35,8 @@ body,
 #root {
     width: 100%;
     height: 100%;
-    font-size: 1rem;
+    font-size: 12px;
+    font-family: "Silkscreen";
 }
 
 /* 3. Root & body defaults */
@@ -98,8 +113,12 @@ textarea::placeholder {
 button {
     background: none;
     border: none;
-    cursor: pointer;
+    /* cursor: var(--cursor-pointer) !important; */
 }
+
+/* input, textarea, p, h1, h2, h3, h4, h5, h6, span{
+    cursor: var(--cursor-text) !important;
+} */
 
 /* 8. Textarea resize — only vertical by default */
 textarea {
@@ -148,8 +167,8 @@ hr {
 /* Keyboard navigation — removes ugly focus ring for mouse
    but keeps it for keyboard users */
 :focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
+    outline: 2px solid var(--outline-color);
+    /* outline-offset: 2px; */
 }
 
 :focus:not(:focus-visible) {
@@ -171,23 +190,20 @@ hr {
 }
 
 
-
-/*  Scroll bar styling */
-
-/* ::-webkit-scrollbar {
-  width: 10px;
-  background: transparent;
+::-webkit-scrollbar {
+    width: 10px;
+    background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: aliceblue;
-  transition: background 0.3s;
+    background: aliceblue;
+    transition: background 0.3s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(240, 248, 255, 0.7);
+    background: rgba(240, 248, 255, 0.7);
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
-} */
+    background: transparent;
+}

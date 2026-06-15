@@ -7,29 +7,9 @@ import { SearchOpenTargetType } from "../../../_enums/SearchOpenTargetEnum";
 import { useWallpaperStore } from "../../stores/useWallpaperStore";
 import { WallpaperType } from "../../../_enums/WallpaperTypeEnum";
 import { VisualSearchEngineOptions } from "../../../_enums/VisualSearchEngineOptionsEnum";
-
-
-async function getGoogleSuggestions(query) {
-    // * Never change the client perameter in this url as other wise the response will be different/complex
-    const url = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}`;
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-        return data[1] || [];
-
-    } catch (e) {
-        console.log(e);
-        if (e.message.includes("Failed to fetch") || e instanceof TypeError) {
-            alert("Go to browser://extensions (replace browser with the name of your browser) and grant this extension access to https://suggestqueries.google.com/* to enable suggestions. If it still hasn't resolved then contact developer. Alternatively, you can turn off suggestions from the extension’s settings.");
-        }
-        else {
-            alert("Something went wrong. Please turn off suggestions or contact the developer for help.");
-        }
-        // ! Removing this will cause loop of errors showing because the function will run again and again on I might change this part later
-        document.activeElement.blur();
-        return [];
-    }
-}
+import { X } from "lucide-react";
+import { getGoogleSuggestions, recognizeVoice } from "./searchdex-helper";
+import { ActionBtnRole } from "../../../_enums/ActionBtnRoleEnum";
 
 
 export function Searchdex() {
@@ -48,28 +28,38 @@ export function Searchdex() {
 
     const {
         searchEngineType, currentSearchEngine, searchEngines,
-        lastQueries, addLastQuery,
+        lastQueries, addLastQuery, removeLastQuery, lastQueriesEnabled, cleanLastQueries,
         suggestions, suggestionsEnabled,
-        autoSubmitVoiceSearch, searchOpenTarget,
-        visualSearchEngine
+        autoSubmitVoiceSearch, searchOpenTarget, recognitionLanguage, visualSearchEngine,
+        actionBtnEnabled, trafficLightsEnabled, actionBtnRole
     } = useSearchdexStore(
         useShallow((state) => ({
             suggestions: state.suggestions,
             lastQueries: state.lastQueries,
             addLastQuery: state.addLastQuery,
+            removeLastQuery: state.removeLastQuery,
+            cleanLastQueries: state.cleanLastQueries,
+
             searchEngineType: state.searchEngineType,
-            searchOpenTarget: state.searchOpenTarget,
             searchEngines: state.searchEngines,
             currentSearchEngine: state.currentSearchEngine,
+            searchOpenTarget: state.searchOpenTarget,
+
             suggestionsEnabled: state.suggestionsEnabled,
             autoSubmitVoiceSearch: state.autoSubmitVoiceSearch,
-            visualSearchEngine: state.visualSearchEngine
+            visualSearchEngine: state.visualSearchEngine,
+
+            recognitionLanguage: state.recognitionLanguage,
+            lastQueriesEnabled: state.lastQueriesEnabled,
+            actionBtnEnabled: state.actionBtnEnabled,
+            trafficLightsEnabled: state.trafficLightsEnabled,
+            actionBtnRole: state.actionBtnRole
         }))
     );
 
-    const currentSuggestionsList = typedQuery.trim() === "" ? lastQueries : suggestions;
+    const isShowingLastQueries = lastQueriesEnabled && typedQuery.trim() === "";
+    const currentSuggestionsList = isShowingLastQueries ? lastQueries : suggestions;
     const showDropdown = isFocused && suggestionsEnabled && currentSuggestionsList.length > 0;
-
 
     const executeSearch = (query) => {
         if (!query.trim()) return;
@@ -109,10 +99,12 @@ export function Searchdex() {
         }
     }, [selectedSuggestionIndex]);
 
+
+    // * We could use on blur on input but it shouldn't be used as it will create problems in clicking suggestions 
     useEffect(() => {
         function handleClickOutside(event) {
             if (containerRef.current && !containerRef.current.contains(event.target)) {
-                console.log("in use effect");
+
                 setIsFocused(false);
             }
         }
@@ -120,12 +112,17 @@ export function Searchdex() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-
+    // ? If the user wishes that we do not store it then we should delete stored ones
+    useEffect(() => {
+        if (!lastQueriesEnabled) {
+            cleanLastQueries();
+        }
+    }, [lastQueriesEnabled]);
 
 
     return (
         <>
-            <div className="pokedex-search" ref={containerRef}>
+            <div className={`pokedex-search ${showDropdown ? "dropdown-active" : ""}`} ref={containerRef}>
                 <form
                     ref={formRef}
                     onSubmit={(e) => {
@@ -137,8 +134,10 @@ export function Searchdex() {
                         type="text"
                         placeholder={`Search${searchEngineType === SearchEngineType.CUSTOM ? " " + searchEngines[currentSearchEngine].name : "..."}`}
                         autoComplete="off"
+                        spellCheck="false"
                         value={inputValue}
                         onFocus={() => { setIsFocused(true); }}
+                        onClick={() => { setIsFocused(true); }}
                         onChange={(e) => {
                             const query = e.target.value;
                             setInputValue(query);
@@ -185,7 +184,6 @@ export function Searchdex() {
 
                                 case 'Escape':
                                     setIsFocused(false);
-                                    console.log("On escape");
                                     setSelectedSuggestionIndex(-1);
                                     break;
                             }
@@ -193,86 +191,75 @@ export function Searchdex() {
                     />
                 </form>
 
+                {trafficLightsEnabled && (<>
+                    <div className="pokedex-dot red" onClick={() => {
+                        useWallpaperStore.setState((state) => ({ wallpaperType: state.wallpaperType === WallpaperType.STATIC ? WallpaperType.ANIMATED : WallpaperType.STATIC }));
+                    }} title="Toggle Wallpaper Type"></div>
+                    <div className="pokedex-dot yellow" title="Previous Wallpaper" onClick={() => {
 
-                <div className="extra-dot3" onClick={() => {
-                    useWallpaperStore.setState((state) => ({ wallpaperType: state.wallpaperType === WallpaperType.STATIC ? WallpaperType.ANIMATED : WallpaperType.STATIC }));
-                }} title="Toggle Wallpaper Type"></div>
-                <div className="extra-dot2" title="Previous Wallpaper" onClick={() => {
+                    }}></div>
+                    <div className="pokedex-dot green" title="Next Wallpaper" onClick={() => {
 
-                }}></div>
-                <div className="extra-dot1" title="Next Wallpaper" onClick={() => {
+                    }}></div>
+                </>)}
 
-                }}></div>
-                <div className="extra-dot0" onClick={() => {
-                    // ! Need to add custom role for this button
-                }} title="Open Wallpaper Settings">
-                </div>
+                {actionBtnEnabled && (
+                    <div className="pokedex-action-btn" onClick={() => {
+                        switch (actionBtnRole) {
+                            case ActionBtnRole.SWITCH_SEARCH_ENGINE: {
+                                if (currentSearchEngine >= searchEngines.length - 1) { // ? in case of  === searchEngines.Length -1 next time we need to have default one anyway
+                                    useSearchdexStore.setState({
+                                        searchEngineType: SearchEngineType.BUILTIN,
+                                        currentSearchEngine: -1
+                                    });
+                                }
+                                else {
+                                    const newState = { currentSearchEngine: currentSearchEngine + 1 };
+                                    if (currentSearchEngine === -1) {
+                                        newState.searchEngineType = SearchEngineType.CUSTOM;
+                                    }
+                                    useSearchdexStore.setState(newState);
+                                }
+                            }
+                                break;
+                            case ActionBtnRole.OPEN_WALLPAPER_SETTINGS: {
+
+                            }
+                                break;
+                            default:
+                                break;
+                        }
+                    }} title="">
+                    </div>
+                )}
+
+
+
                 <div className={`search-btns ${isRecognitionActive ? "active" : ""}`} title="Search by Voice" tabIndex="0" onKeyUp={(e) => {
                     if (e.key === "Enter") {
-                        e.target.click();
+                        e.currentTarget.click();
                     }
-                }} onClick={() => {
+                }} onClick={async () => {
+                    const query = await recognizeVoice(setIsRecognitionActive, recognitionLanguage);
 
-                    if (!('webkitSpeechRecognition' in window)) {
-                        alert('Your browser does not support voice recognition.');
-                        return;
-                    }
-
-                    if (navigator.brave) {
-                        alert("Sorry, Brave does not support this feature.");
-                        return;
-                    }
-
-                    setIsRecognitionActive(true);
-
-                    const recognition = new webkitSpeechRecognition();
-                    recognition.lang = 'en-US';
-                    recognition.interimResults = false; // Only return final results
-                    recognition.start();
-
-                    recognition.onaudiostart = () => {
-                        // console.log("Voice recognition started.");
-                    };
-
-                    recognition.onspeechend = () => {
-                        // console.log("Speech ended, processing...");
-                        recognition.stop();
-                    };
-
-                    recognition.onresult = (event) => {
-                        const query = event.results[0][0].transcript;
-                        // console.log("Voice recognition result:", query);
-
+                    if (query) {
                         setInputValue(query);
                         setTypedQuery(query);
 
                         if (autoSubmitVoiceSearch) {
                             formRef.current.requestSubmit();
                         }
-
-                        setIsRecognitionActive(false);
-                    };
-
-                    recognition.onerror = (event) => {
-                        console.error(event.error);
-
-                        setIsRecognitionActive(false);
-                        if (event.error === "aborted") {
-                            alert('Voice recognition failed: ' + event.error + ", try refreshing your page.");
-                        }
-                        else if (event.error === "network")
-                            alert('Voice recognition failed: ' + event.error + ",                Note that: This feature is not supported on Vivaldi.");
-                    };
-
-                    recognition.onend = () => {
-                        // console.log("Recognition ended.");
-                        setIsRecognitionActive(false);
-                    };
-
+                    }
                 }}>
                     <img src="icons\voice-search.png" alt="voice search icon" class="search-btns-img" />
                 </div>
-                <div className="search-btns" id="img-search" title="Search by Image">
+                <div className="search-btns" id="img-search" title="Search by Image" tabIndex="0"
+                    onKeyUp={(e) => {
+                        if (e.key === "Enter") {
+                            e.currentTarget.firstElementChild.click();
+                        }
+                    }}
+                >
                     <a target={searchOpenTarget === SearchOpenTargetType.NEW_TAB ? "_blank" : "_self"} href={visualSearchEngine === VisualSearchEngineOptions.LENS ? "https://lens.google.com/search?" : "https://www.bing.com/visualsearch?"} >
                         <img src="icons\image-search.png" alt="image search icon" class="search-btns-img" />
                     </a>
@@ -280,20 +267,35 @@ export function Searchdex() {
 
 
                 {showDropdown && (
-                    <div id="suggestions" style={{ display: 'block' }}>
-                        {currentSuggestionsList.map((suggestion, index) => (
-                            <div
-                                key={index}
-                                id={`suggestion-${index}`}
-                                className={`suggestion-item ${index === selectedSuggestionIndex ? 'selected' : ''}`}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    executeSearch(suggestion);
-                                }}
-                            >
-                                {suggestion}
-                            </div>
-                        ))}
+                    <div className="suggestions-container">
+                        <div id="suggestions">
+                            {currentSuggestionsList.map((suggestion, index) => (
+                                <div
+                                    key={index}
+                                    id={`suggestion-${index}`}
+                                    className={`suggestion-item ${index === selectedSuggestionIndex ? 'selected' : ''}`}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        executeSearch(suggestion);
+                                    }}
+                                >
+                                    <span>{suggestion}</span>
+
+                                    {isShowingLastQueries && (
+                                        <div
+                                            className="delete-query-btn"
+                                            title="Remove from history"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                removeLastQuery(suggestion);
+                                            }}
+                                        >
+                                            <X size={16} color=" #f0f8ffb3" />
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div >

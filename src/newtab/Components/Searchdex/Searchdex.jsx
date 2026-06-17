@@ -229,10 +229,10 @@ export function Searchdex() {
                             default:
                                 break;
                         }
-                    }} title="">
+                    }} title="Switch Search Engine">
                     </div>
                 )}
-
+                
 
 
                 <div className={`search-btns ${isRecognitionActive ? "active" : ""}`} title="Search by Voice" tabIndex="0" onKeyUp={(e) => {

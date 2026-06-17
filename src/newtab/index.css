@@ -1,5 +1,7 @@
 :root {
     --outline-color: #ffffff;
+    --outline-color-faded: rgba(255, 255, 255, 0.7); 
+    --font-color: aliceblue;
     /* ? putting !important next to a css variable is useless browser will ignore it*/
     --cursor-default: default;
     --cursor-pointer: pointer;
@@ -37,6 +39,7 @@ body,
     height: 100%;
     font-size: 12px;
     font-family: "Silkscreen";
+    color:  var(--font-color);
 }
 
 /* 3. Root & body defaults */
